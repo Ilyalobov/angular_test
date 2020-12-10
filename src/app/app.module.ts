@@ -11,7 +11,8 @@ import { LogClickDirective } from './log-click.directive';
     AppComponent,
     ReversePipe,
     UserCardComponent,
-    LogClickDirective
+    LogClickDirective,
+
   ],
   imports: [
     BrowserModule
