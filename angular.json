@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "testService"
+  "defaultProject": "testService",
+  "cli": {
+    "analytics": "4cd6a156-20b3-45ea-a05c-158e4017fcee"
+  }
 }
