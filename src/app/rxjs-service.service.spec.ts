@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { TestScheduler } from 'rxjs/testing';
 import { RxjsServiceService } from './rxjs-service.service';
-import { map, mergeMap, tap, throttleTime } from 'rxjs/operators';
+import { map, mergeMap, multicast, tap, throttleTime } from 'rxjs/operators';
 import { cold, hot } from 'jasmine-marbles';
 import { TapFormatter } from 'tslint/lib/formatters';
-
+import { of, timer, Subject, concat } from 'rxjs';
+import { createCall } from 'typescript';
 describe('RxjsServiceService', () => {
   let service: RxjsServiceService;
-
+ let spy:jasmine.Spy;
 // const testScheduler = new TestScheduler((actual, expected) => {
 //   // asserting the two objects are equal
 //   // e.g. using chai.
@@ -20,11 +21,12 @@ describe('RxjsServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [RxjsServiceService]});
     service = TestBed.inject(RxjsServiceService);
+    
   });
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-  it('generate the stream correctly', () => {
+  xit('generate the stream correctly', () => {
     //const source =        hot('-a-^b---c-|');
     /*const subscription = cold('^------!');
     const main  =        cold('^------!');
@@ -67,5 +69,45 @@ describe('RxjsServiceService', () => {
       t: true,
       f: false
     }));
+  });
+
+  xit('should dayTest', () => {
+
+    const things   = 'a-b-a';
+
+    const expected =  'a-b-a';
+    // spy on
+    // service.firstObs= hot(things, {
+    //   a: 1,
+    //   b: 2
+    // });
+
+ 
+    spyOnProperty(service, 'firstObs', 'get').and.returnValue(cold(things,{a: ['a', 'b'],b: []}))
+    
+    //spyOnProperty(service, )
+    spyOn(service['dayTest'], 'asObservable').and.returnValue(hot(things, {
+      a: ['a', 'b'],
+      b: []
+    }));
+    expect(service.dayTest$).toBeObservable(cold(expected, {
+      a: ['a', 'b'],
+      b: []
+    }));
+  });
+
+  it('should work with a hot observable', () => {
+    const provided = new Subject<number>();
+
+    const expected = hot('--a--b', { a: 1, b: 2 });
+    expect(expected.pipe(tap(v => provided.next(v)))).toBeObservable(expected);
+  });
+  it('not fucking test  ', () => {
+    const provided = new Subject<number>();
+    const obs1 =     cold('-a-', {a:1});
+    const obs2 =     cold('-a-', {a:1});
+    const expected =  hot('-a-', {a:undefined});
+    let ss=service.subscribeToShipmentDayFirst(obs1, obs2);
+    expect(ss.pipe(map(v=> provided.next(v)))).toBeObservable(expected)
   });
 });
