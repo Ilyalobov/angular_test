@@ -41,11 +41,8 @@ describe('RxjsServiceService', () => {
       f: false
     }));
   });
-
-
   it('should work with a hot observable', () => {
     const provided = new Subject<number>();
-
     const expected = hot('--a--b', { a: 1, b: 2 });
     expect(expected.pipe(tap(v => provided.next(v)))).toBeObservable(expected);
   });
@@ -54,16 +51,16 @@ describe('RxjsServiceService', () => {
     const obs1 =     cold('-a-', {a:1});
     const obs2 =     cold('-a-', {a:1});
     const expected =  hot('-a-', {a: undefined});
-    let ss=service.justTwoObservebels(obs1, obs2);
-    expect(ss.pipe(map(v=> provided.next(v)))).toBeObservable(expected)
+    let result=service.justTwoObservebels(obs1, obs2);
+    expect(result.pipe(map(v=> provided.next(v)))).toBeObservable(expected)
   });
  it('is complited Test with params', () => {
-  const obs1 =     cold('-a-', {a:1});
-  const obs2 =     cold('-a-', {a:1});
-  const test =     cold('-a-', {a:1});
-  //const expected =  hot('-a-', {a: undefined});
-  let ss=service.SubscribeWithParams(obs1, obs2);
-  ss.subscribe(e=>console.log('asdasd',e))
-  expect(ss).toBeObservable(test)
+  const values = { a: 10, b: 30, x: 20, y: 40 };
+  const obs1 =     cold("-a-----a--b-|", values);
+  const obs2 =     cold("a-a-a|", values);
+  const expected = cold("-x-x-x-x-xy-y-y|", values);
+
+  let result=service.SubscribeWithParams(obs1, obs2);
+  expect(result).toBeObservable(expected)
  });
 });

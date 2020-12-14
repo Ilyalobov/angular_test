@@ -18,30 +18,19 @@ export class RxjsServiceService {
     constructor(){
         //this.firstObs=new Observable<number>();
     }
-
-
-    
-    
-    public dayTest =  new Subject();
-    public firstObs : Observable<boolean>;
-
-
-
     public justTwoObservebels(mainObs: Observable<number>, firstObs: Observable<number>): Observable<number> {
-        let cc= mainObs.pipe(
+        let response= mainObs.pipe(
             map(r=> firstObs),
             multicast(new Subject())
         ) as ConnectableObservable<number>
-        cc.connect();
-        return cc;
+        response.connect();
+        return response;
     }
 
     public SubscribeWithParams(mainObs: Observable<number>, firstObs: Observable<number>): Observable<number> {
-        let ss=mainObs.pipe(
-            switchMap(r=> firstObs),
-            filter(c=>c!==undefined)
+        return mainObs.pipe(
+            switchMap(x => firstObs.pipe(map(y => x + y))),
         );
-        return ss;
     }
 }
 
