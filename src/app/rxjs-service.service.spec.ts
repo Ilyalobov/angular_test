@@ -26,35 +26,6 @@ describe('RxjsServiceService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-  xit('generate the stream correctly', () => {
-    //const source =        hot('-a-^b---c-|');
-    /*const subscription = cold('^------!');
-    const main  =        cold('^------!');
-    const first  =       cold('^------!');
-    const second =       cold('^------!');
-    const expected =     cold('^------!');
-    const source = service.subscribeToShipmentDayFirst(main, first, second);
-    */
-    const values =    { a: 1 , b: 2, c: 3};
-    // const obs1 =     cold('-a-------a--', values);
-    // const obs2 =     cold('-a-------a--', values);
-    // const obs3 =     cold('-a-------a--', values);
-    // const expected = cold('-a----------', values);
-    const obs1 =     cold('-a-', {a:1});
-    const obs2 =     cold('-a-', {a:1});
-    //const expected = cold('-bac-bac', values );
-    const expected = hot('--a', {a:1});
-    const result =  service.subscribeToShipmentDayFirst(obs1, obs2);
-    result.pipe(tap(r => {
-      console.log('asdasdada', r)
-    }));
-    result.subscribe(r=>{
-                    expect(r).toBeObservable(expected);
-      })
-    /*
-    expect(source).toBeObservable(expected);
-    expect(source).toHaveSubscriptions(subscription);*/
-  });
   
   it('should ', () => {
     const things   = 'a-b-a';
@@ -71,30 +42,6 @@ describe('RxjsServiceService', () => {
     }));
   });
 
-  xit('should dayTest', () => {
-
-    const things   = 'a-b-a';
-
-    const expected =  'a-b-a';
-    // spy on
-    // service.firstObs= hot(things, {
-    //   a: 1,
-    //   b: 2
-    // });
-
- 
-    spyOnProperty(service, 'firstObs', 'get').and.returnValue(cold(things,{a: ['a', 'b'],b: []}))
-    
-    //spyOnProperty(service, )
-    spyOn(service['dayTest'], 'asObservable').and.returnValue(hot(things, {
-      a: ['a', 'b'],
-      b: []
-    }));
-    expect(service.dayTest$).toBeObservable(cold(expected, {
-      a: ['a', 'b'],
-      b: []
-    }));
-  });
 
   it('should work with a hot observable', () => {
     const provided = new Subject<number>();
@@ -102,12 +49,21 @@ describe('RxjsServiceService', () => {
     const expected = hot('--a--b', { a: 1, b: 2 });
     expect(expected.pipe(tap(v => provided.next(v)))).toBeObservable(expected);
   });
-  it('not fucking test  ', () => {
+  it('is complited Test', () => {
     const provided = new Subject<number>();
     const obs1 =     cold('-a-', {a:1});
     const obs2 =     cold('-a-', {a:1});
-    const expected =  hot('-a-', {a:undefined});
-    let ss=service.subscribeToShipmentDayFirst(obs1, obs2);
+    const expected =  hot('-a-', {a: undefined});
+    let ss=service.justTwoObservebels(obs1, obs2);
     expect(ss.pipe(map(v=> provided.next(v)))).toBeObservable(expected)
   });
+ it('is complited Test with params', () => {
+  const obs1 =     cold('-a-', {a:1});
+  const obs2 =     cold('-a-', {a:1});
+  const test =     cold('-a-', {a:1});
+  //const expected =  hot('-a-', {a: undefined});
+  let ss=service.SubscribeWithParams(obs1, obs2);
+  ss.subscribe(e=>console.log('asdasd',e))
+  expect(ss).toBeObservable(test)
+ });
 });
