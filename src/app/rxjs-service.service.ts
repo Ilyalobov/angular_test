@@ -7,11 +7,11 @@ export class RxjsServiceService {
     // tslint:disable-next-line:typedef max-line-length
     public  static f = 0;
     public  static s = 0;
-    
+
 
     private things = new BehaviorSubject<Array<string>>([]);
-    
-      
+
+
     public get things$(): Observable<boolean> {
          return this.things.asObservable().pipe(map((things) => things.length > 0))
     }
@@ -26,6 +26,9 @@ export class RxjsServiceService {
         response.connect();
         return response;
     }
+
+
+
 
     public SubscribeWithParams(mainObs: Observable<number>, firstObs: Observable<number>): Observable<number> {
         return mainObs.pipe(
